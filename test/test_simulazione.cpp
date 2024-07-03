@@ -4,96 +4,250 @@
 #include "../src/Simulation.hpp"
 #include "doctest.h"
 
-TEST_CASE("Test costruttore Simulazione con parametri validi") {
+// Definizione della macro per i test case
+#define TEST_CASE(name) DOCTEST_TEST_CASE(name)
+
+// Test per verificare il controllo dei parametri iniziali
+TEST_CASE("Check initial parameters") {
   SimulationParameters params;
-  params.initial_x = 2000;
-  params.initial_y = 10;
+
+  SUBCASE("Valid parameters") {
+    params.initial_x = 1.8;
+    params.initial_y = 4.3;
+    params.A = 0.1;
+    params.B = 0.02;
+    params.C = 0.05;
+    params.D = 0.1;
+    params.dt = 0.1;
+
+    CHECK_NOTHROW({
+      Simulation s = Simulation(params);
+      (void)s;  // Cast to void to avoid unused variable warning
+    });
+  }
+
+  SUBCASE("Negative initial_x") {
+    params.initial_x = -1.0;
+    params.initial_y = 4.3;
+    params.A = 0.1;
+    params.B = 0.02;
+    params.C = 0.05;
+    params.D = 0.1;
+    params.dt = 0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+
+  SUBCASE("Negative initial_y") {
+    params.initial_x = 1.8;
+    params.initial_y = -4.3;
+    params.A = 0.1;
+    params.B = 0.02;
+    params.C = 0.05;
+    params.D = 0.1;
+    params.dt = 0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+
+  // test parametri invalidi
+  SUBCASE("Zero A") {
+    params.initial_x = 1.8;
+    params.initial_y = 4.3;
+    params.A = 0.0;
+    params.B = 0.02;
+    params.C = 0.05;
+    params.D = 0.1;
+    params.dt = 0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+
+  SUBCASE("Zero B") {
+    params.initial_x = 1.8;
+    params.initial_y = 4.3;
+    params.A = 0.1;
+    params.B = 0.0;
+    params.C = 0.05;
+    params.D = 0.1;
+    params.dt = 0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+
+  SUBCASE("Zero C") {
+    params.initial_x = 1.8;
+    params.initial_y = 4.3;
+    params.A = 0.1;
+    params.B = 0.02;
+    params.C = 0.0;
+    params.D = 0.1;
+    params.dt = 0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+
+  SUBCASE("Zero D") {
+    params.initial_x = 1.8;
+    params.initial_y = 4.3;
+    params.A = 0.1;
+    params.B = 0.02;
+    params.C = 0.05;
+    params.D = 0.0;
+    params.dt = 0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+
+  SUBCASE("Negative dt") {
+    params.initial_x = 1.8;
+    params.initial_y = 4.3;
+    params.A = 0.1;
+    params.B = 0.02;
+    params.C = 0.05;
+    params.D = 0.1;
+    params.dt = -0.1;
+
+    CHECK_THROWS_AS(
+        {
+          Simulation s = Simulation(params);
+          (void)s;  // Cast to void to avoid unused variable warning
+        },
+        std::invalid_argument);
+  }
+}
+
+// Test per verificare l'evoluzione delle popolazioni nel tempo
+TEST_CASE("Evolution of populations") {
+  SimulationParameters params;
+  params.initial_x = 1.8;
+  params.initial_y = 4.3;
   params.A = 0.1;
   params.B = 0.02;
   params.C = 0.05;
   params.D = 0.1;
-  params.dt = 0.01;
-
-  Simulation sim(params);
-
-  CHECK(sim.get_relative_x() == 1);
-  CHECK(sim.get_relative_y() == 1);
-  CHECK(sim.get_H() == 0);
-}
-
-TEST_CASE("Test costruttore Simulazione con parametri validi") {
-  SimulationParameters params;
-  params.initial_x = 0;
-  params.initial_y = 0;
-  params.A = 1;
-  params.B = 1;
-  params.C = 1;
-  params.D = 1;
-  params.dt = 0.001;
-
-  Simulation sim(params);
-
-  CHECK(sim.get_relative_x() == 0);
-  CHECK(sim.get_relative_y() == 0);
-  CHECK(sim.get_H() == 0);
-}
-
-TEST_CASE("Test costruttore Simulazione con parametri NON validi") {
-  SimulationParameters params;
-  params.initial_x = -1;
-  params.initial_y = 0;
-  params.A = 1;
-  params.B = 1;
-  params.C = 1;
-  params.D = 1;
   params.dt = 0.1;
 
-  CHECK_THROWS_AS(Simulation sim(params), std::invalid_argument);
+  Simulation simulation(params);
+
+  // Verifica che l'evoluzione non lanci eccezioni
+  CHECK_NOTHROW(simulation.evolve());
+
+  // Verifica che le popolazioni non diventino negative o infinite
+  for (int i = 0; i < 100; ++i) {
+    simulation.evolve();
+    CHECK(simulation.get_current_x() >= 0.0);
+    CHECK(simulation.get_current_y() >= 0.0);
+    CHECK_FALSE(std::isinf(simulation.get_current_x()));
+    CHECK_FALSE(std::isinf(simulation.get_current_y()));
+  }
 }
 
-TEST_CASE("Test costruttore Simulazione con parametri NON validi") {
+// Test per verificare il calcolo dei valori relativi
+TEST_CASE("Relative values calculation") {
   SimulationParameters params;
-  params.initial_x = 0;
-  params.initial_y = -1;
-  params.A = 1;
-  params.B = 1;
-  params.C = 1;
-  params.D = 1;
+  params.initial_x = 1.8;
+  params.initial_y = 4.3;
+  params.A = 0.1;
+  params.B = 0.02;
+  params.C = 0.05;
+  params.D = 0.1;
   params.dt = 0.1;
 
-  CHECK_THROWS_AS(Simulation sim(params), std::invalid_argument);
+  Simulation simulation(params);
+
+  double x_eq = params.D / params.C;
+  double y_eq = params.A / params.B;
+
+  CHECK(simulation.get_relative_x() ==
+        doctest::Approx(params.initial_x / x_eq));
+  CHECK(simulation.get_relative_y() ==
+        doctest::Approx(params.initial_y / y_eq));
 }
 
-TEST_CASE("Test costruttore Simulazione con parametri NON validi") {
+// Test per verificare il calcolo dell'integrale primitivo H(x, y)
+TEST_CASE("Primitive integral H(x, y)") {
   SimulationParameters params;
-  params.initial_x = 0;
-  params.initial_y = 0;
-  params.A = -1;
-  params.B = 1;
-  params.C = 1;
-  params.D = 1;
+  params.initial_x = 1.8;
+  params.initial_y = 4.3;
+  params.A = 0.1;
+  params.B = 0.02;
+  params.C = 0.05;
+  params.D = 0.1;
   params.dt = 0.1;
 
-  CHECK_THROWS_AS(Simulation sim(params), std::invalid_argument);
+  Simulation simulation(params);
+
+  double expected_H =
+      -params.D * std::log(params.initial_x) + params.C * params.initial_x +
+      params.B * params.initial_y - params.A * std::log(params.initial_y);
+
+  CHECK(simulation.get_H() == doctest::Approx(expected_H).epsilon(0.01));
 }
 
-TEST_CASE("Test costruttore Simulazione con parametri NON validi") {
+// Test per verificare la stringa di stato della simulazione
+TEST_CASE("Simulation state string") {
   SimulationParameters params;
-  params.initial_x = 0;
-  params.initial_y = 0;
-  params.A = 1;
-  params.B = -1;
-  params.C = 1;
-  params.D = 1;
+  params.initial_x = 1.8;
+  params.initial_y = 4.3;
+  params.A = 0.1;
+  params.B = 0.02;
+  params.C = 0.05;
+  params.D = 0.1;
   params.dt = 0.1;
 
-  CHECK_THROWS_AS(Simulation sim(params), std::invalid_argument);
+  Simulation simulation(params);
+  std::string state = simulation.to_string();
+
+  CHECK(state.find("x(0) = 1.8") != std::string::npos);
+  CHECK(state.find("y(0) = 4.3") != std::string::npos);
 }
 
-TEST_CASE("Test costruttore Simulazione con parametri NON validi") {}
+// Test per verificare la validità dei parametri nel metodo evolve
+TEST_CASE("Evolve method parameter validity") {
+  SimulationParameters params;
+  params.initial_x = 1.8;
+  params.initial_y = 4.3;
+  params.A = 0.1;
+  params.B = 0.02;
+  params.C = 0.05;
+  params.D = 0.1;
+  params.dt = 0.1;
 
-TEST_CASE("Test costruttore Simulazione con parametri strani") {}
+  // Caso di valori negativi
+  params.initial_x = -1.0;
+  params.initial_y = -1.0;
 
-TEST_CASE(
-    "Test che la simulazione si evolva mantenendo un X e Yrelativo positivo o "
-    "nullo ") {}
+  // Check that the constructor throws an exception for invalid parameters
+  CHECK_THROWS_AS(Simulation simNegative(params), std::invalid_argument);
+}

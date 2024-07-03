@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -62,11 +63,11 @@ int main(int argc, char *argv[]) {
   }
 
   // Salvo i parametri della simulazione separati da spazi
-  file << params.dt << " ";
+  /* file << params.dt << " ";
   file << params.A << " ";
   file << params.B << " ";
   file << params.C << " ";
-  file << params.D << "\n";
+  file << params.D << "\n"; */
 
   for (int i = 0; i < steps; ++i) {
     // Salvo lo stato della simulazione su file
@@ -86,5 +87,42 @@ int main(int argc, char *argv[]) {
     std::cerr << "Errore durante la chiusura del file dei risultati"
               << std::endl;
     return 1;
+  };
+
+  // parte grafica
+
+  unsigned const display_height =
+      0.9 * sf::VideoMode::getDesktopMode().height;  //=768
+  int const fps = 60;                                // frame per second
+
+  sf::RenderWindow window(sf::VideoMode(display_height, display_height),
+                          "Lotka.Volterra", sf::Style::Default);
+  window.setFramerateLimit(fps);
+
+  while (window.isOpen()) {
+    sf::Event e;
+
+    while (window.pollEvent(e)) {
+      if (e.type == sf::Event::Closed) {
+        window.close();
+      }
+    }
+
+    window.clear(sf::Color::White);
+
+    std::ifstream input;
+    input.open("simulation_output.txt");
+
+    while (input.good()) {
+      double x;
+      double y;
+      input >> x >> y;
+      sf::CircleShape shape = sf::CircleShape(2);
+      shape.setPosition((x / 3) * display_height, (y / 7) * display_height);
+      shape.setFillColor(sf::Color::Black);
+      window.draw(shape);
+    }
+
+    window.display();
   }
 }

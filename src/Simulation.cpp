@@ -83,7 +83,7 @@ double Simulation::get_H() {
 void Simulation::evolve() {
   t += dt;
 
-  // Aggiorno i valodi di x e y
+  // Aggiorno i valori di x e y
   double old_x = current_x;
   double old_y = current_y;
 
