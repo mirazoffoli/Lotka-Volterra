@@ -3,7 +3,7 @@
 
 #include <string>
 
-typedef struct {
+struct SimulationParameters {
   double initial_x;
   double initial_y;
   double A;
@@ -11,7 +11,7 @@ typedef struct {
   double C;
   double D;
   double dt;
-} SimulationParameters;
+};
 
 class Simulation {
  private:
@@ -34,17 +34,17 @@ class Simulation {
   double dt;
 
  public:
-  Simulation(SimulationParameters params);
+  Simulation(SimulationParameters const& params);
 
   // TODO Capire se aggiungere const
-  double get_relative_x();
-  double get_relative_y();
-  double get_current_x();
-  double get_current_y();
-  double get_H();
+  double get_relative_x() const;
+  double get_relative_y() const;
+  double get_current_x() const;
+  double get_current_y() const;
+  double get_H() const;
 
   void evolve();
-  std::string to_string();
+  std::string print_info() const;
 };
 
 #endif

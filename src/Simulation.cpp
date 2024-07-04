@@ -5,7 +5,7 @@
 #include <sstream>
 #include <stdexcept>
 
-void check_parameters(SimulationParameters& params) {
+void check_parameters(SimulationParameters const& params) {
   if (params.initial_x < 0) {
     std::cerr << "Il numero iniziale di prede deve essere >= 0" << std::endl;
     throw std::invalid_argument("Invalid parameter value initial_x");
@@ -45,37 +45,37 @@ void check_parameters(SimulationParameters& params) {
 }
 
 // Metodo costruttore
-Simulation::Simulation(SimulationParameters params) {
+Simulation::Simulation(SimulationParameters const& params){
   // Controllo dei parametri
   check_parameters(params);
 
   // Inizializzazione
-  this->current_x = params.initial_x;
-  this->current_y = params.initial_y;
-  this->A = params.A;
-  this->B = params.B;
-  this->C = params.C;
-  this->D = params.D;
-  this->t = 0.0;
-  this->dt = params.dt;
+  current_x = params.initial_x;
+  current_y = params.initial_y;
+  A = params.A;
+  B = params.B;
+  C = params.C;
+  D = params.D;
+  t = 0.0;
+  dt = params.dt;
 }
 
 // Calcolo di x e y relativi al punto di equilibrio
 // Gestisco il caso in cui il punto di equilibrio sia 0
-double Simulation::get_relative_x() {
+double Simulation::get_relative_x() const {
   double x_eq = D / C;
   return (x_eq != 0) ? (current_x / x_eq) : 0;
 }
-double Simulation::get_relative_y() {
+double Simulation::get_relative_y() const {
   double y_eq = A / B;
   return (y_eq != 0) ? (current_y / y_eq) : 0;
 }
 
-double Simulation::get_current_x() { return current_x; }
-double Simulation::get_current_y() { return current_y; }
+double Simulation::get_current_x() const { return current_x; }
+double Simulation::get_current_y() const { return current_y; }
 
 // Calcolo dell'integrale primitivo H(x, y)
-double Simulation::get_H() {
+double Simulation::get_H() const {
   return -D * log(current_x) + C * current_x + B * current_y -
          A * log(current_y);
 }
@@ -105,7 +105,7 @@ void Simulation::evolve() {
   }
 }
 
-std::string Simulation::to_string() {
+std::string Simulation::print_info() const {
   std::ostringstream oss;
 
   oss << "x(" << t << ") = " << current_x

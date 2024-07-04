@@ -6,7 +6,7 @@
 #include "Simulation.hpp"
 
 // Inserimento dei parametri da riga di comando a tempo di esecuzione
-void insert_parameters(SimulationParameters &params) {
+void insert_parameters(SimulationParameters& params) {
   std::cout << "Inserisci il numero iniziale di prede (x): ";
   std::cin >> params.initial_x;
   std::cout << "Inserisci il numero iniziale di predatori (y): ";
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     file << simulation.get_current_y() << std::endl;
 
     // Stampo a schermo lo stato
-    std::cout << simulation.to_string() << std::endl;
+    std::cout << simulation.print_info() << std::endl;
 
     // Mando avanti la simulazione
     simulation.evolve();
@@ -90,9 +90,8 @@ int main(int argc, char *argv[]) {
   };
 
   // parte grafica
-
   unsigned const display_height =
-      0.9 * sf::VideoMode::getDesktopMode().height;  //=768
+      0.9 * sf::VideoMode::getDesktopMode().height;  
   int const fps = 60;                                // frame per second
 
   sf::RenderWindow window(sf::VideoMode(display_height, display_height),

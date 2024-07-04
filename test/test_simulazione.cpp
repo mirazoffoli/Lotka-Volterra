@@ -227,7 +227,7 @@ TEST_CASE("Simulation state string") {
   params.dt = 0.1;
 
   Simulation simulation(params);
-  std::string state = simulation.to_string();
+  std::string state = simulation.print_info();
 
   CHECK(state.find("x(0) = 1.8") != std::string::npos);
   CHECK(state.find("y(0) = 4.3") != std::string::npos);
