@@ -18,7 +18,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.05;
     params.D = 0.1;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_NOTHROW({
       Simulation s = Simulation(params);
@@ -33,7 +33,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.05;
     params.D = 0.1;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_THROWS_AS(
         {
@@ -50,7 +50,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.05;
     params.D = 0.1;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_THROWS_AS(
         {
@@ -68,7 +68,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.05;
     params.D = 0.1;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_THROWS_AS(
         {
@@ -85,7 +85,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.0;
     params.C = 0.05;
     params.D = 0.1;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_THROWS_AS(
         {
@@ -102,7 +102,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.0;
     params.D = 0.1;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_THROWS_AS(
         {
@@ -119,7 +119,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.05;
     params.D = 0.0;
-    params.dt = 0.1;
+    params.dt = 0.001;
 
     CHECK_THROWS_AS(
         {
@@ -136,7 +136,7 @@ TEST_CASE("Check initial parameters") {
     params.B = 0.02;
     params.C = 0.05;
     params.D = 0.1;
-    params.dt = -0.1;
+    params.dt = -0.001;
 
     CHECK_THROWS_AS(
         {
@@ -156,7 +156,7 @@ TEST_CASE("Evolution of populations") {
   params.B = 0.02;
   params.C = 0.05;
   params.D = 0.1;
-  params.dt = 0.1;
+  params.dt = 0.001;
 
   Simulation simulation(params);
 
@@ -182,7 +182,7 @@ TEST_CASE("Relative values calculation") {
   params.B = 0.02;
   params.C = 0.05;
   params.D = 0.1;
-  params.dt = 0.1;
+  params.dt = 0.001;
 
   Simulation simulation(params);
 
@@ -204,7 +204,7 @@ TEST_CASE("Primitive integral H(x, y)") {
   params.B = 0.02;
   params.C = 0.05;
   params.D = 0.1;
-  params.dt = 0.1;
+  params.dt = 0.001;
 
   Simulation simulation(params);
 
@@ -224,7 +224,7 @@ TEST_CASE("Simulation state string") {
   params.B = 0.02;
   params.C = 0.05;
   params.D = 0.1;
-  params.dt = 0.1;
+  params.dt = 0.001;
 
   Simulation simulation(params);
   std::string state = simulation.print_info();
@@ -242,7 +242,7 @@ TEST_CASE("Evolve method parameter validity") {
   params.B = 0.02;
   params.C = 0.05;
   params.D = 0.1;
-  params.dt = 0.1;
+  params.dt = 0.001;
 
   // Caso di valori negativi
   params.initial_x = -1.0;
