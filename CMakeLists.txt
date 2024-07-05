@@ -34,10 +34,10 @@ if (BUILD_TESTING)
 
 	file(GLOB TESTS "test/*.cpp")
 
-	add_executable(all.t ${TESTS} src/Simulation.cpp)
-	  target_link_libraries(all.t sfml-graphics sfml-window sfml-system)
+	add_executable(test_simulazione ${TESTS} src/Simulation.cpp)
+	  target_link_libraries(test_simulazione sfml-graphics sfml-window sfml-system)
 
-	# aggiungi l'eseguibile all.t alla lista dei test
-	add_test(NAME all.t COMMAND all.t)
+	# aggiungi l'eseguibile test_simulazione alla lista dei test
+	add_test(NAME test_simulazione COMMAND test_simulazione)
 	
 endif()
