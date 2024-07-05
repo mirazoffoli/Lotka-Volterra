@@ -18,11 +18,10 @@ class Simulation {
   // x prede, y predatori
   double current_x, current_y;
 
-  // A: quanto le prede si riproducono (senza predatori, le prede aumentano di
-  // Ax a iterazione)
+  // A: tasso riproduzione prede
   // B: tasso mortalità prede (che probabilità ha ogni predatore di uccidere
   // una preda)
-  // C: quanto i predatori si riproducono
+  // C: tasso riproduzione predatori
   // D: tasso mortalità predatori
   double A, B, C, D;
 
@@ -36,7 +35,6 @@ class Simulation {
  public:
   Simulation(SimulationParameters const& params);
 
-  // TODO Capire se aggiungere const
   double get_relative_x() const;
   double get_relative_y() const;
   double get_current_x() const;

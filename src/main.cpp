@@ -62,13 +62,6 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  // Salvo i parametri della simulazione separati da spazi
-  /* file << params.dt << " ";
-  file << params.A << " ";
-  file << params.B << " ";
-  file << params.C << " ";
-  file << params.D << "\n"; */
-
   for (int i = 0; i < steps; ++i) {
     // Salvo lo stato della simulazione su file
     file << simulation.get_current_x() << " ";
@@ -89,10 +82,9 @@ int main(int argc, char *argv[]) {
     return 1;
   };
 
-  // parte grafica
-  unsigned const display_height =
-      0.9 * sf::VideoMode::getDesktopMode().height;  
-  int const fps = 60;                                // frame per second
+   // Parte grafica
+    unsigned const display_height = static_cast<unsigned int>(0.9 * sf::VideoMode::getDesktopMode().height);  
+    int const fps = 60;                             // frame per second
 
   sf::RenderWindow window(sf::VideoMode(display_height, display_height),
                           "Lotka.Volterra", sf::Style::Default);
@@ -117,7 +109,7 @@ int main(int argc, char *argv[]) {
       double y;
       input >> x >> y;
       sf::CircleShape shape = sf::CircleShape(2);
-      shape.setPosition((x / 3) * display_height, (y / 7) * display_height);
+      shape.setPosition(static_cast<float>((x / 3)  * display_height),  static_cast<float>((y / 7) * display_height));
       shape.setFillColor(sf::Color::Black);
       window.draw(shape);
     }

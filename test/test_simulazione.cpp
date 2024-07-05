@@ -22,7 +22,7 @@ TEST_CASE("Check initial parameters") {
 
     CHECK_NOTHROW({
       Simulation s = Simulation(params);
-      (void)s;  // Cast to void to avoid unused variable warning
+      (void)s;  // faccio cast esplicito a void
     });
   }
 
@@ -38,7 +38,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -55,7 +55,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -73,7 +73,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -90,7 +90,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -107,7 +107,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -124,7 +124,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -141,7 +141,7 @@ TEST_CASE("Check initial parameters") {
     CHECK_THROWS_AS(
         {
           Simulation s = Simulation(params);
-          (void)s;  // Cast to void to avoid unused variable warning
+          (void)s;  // faccio cast esplicito a void
         },
         std::invalid_argument);
   }
@@ -248,6 +248,6 @@ TEST_CASE("Evolve method parameter validity") {
   params.initial_x = -1.0;
   params.initial_y = -1.0;
 
-  // Check that the constructor throws an exception for invalid parameters
+  // Controlla che il costruttore lanci una eccezione per parametri  non validi
   CHECK_THROWS_AS(Simulation simNegative(params), std::invalid_argument);
 }
